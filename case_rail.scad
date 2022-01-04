@@ -1,6 +1,8 @@
 
 use <rounded_cube.scad>
 
+PART = "rail";
+
 tolerance = 0.75;
 $fn=120;
 
@@ -75,13 +77,6 @@ module rail() {
     clip(rail_h / 3, 7, 2);
 }
 
-rail();
-
-//translate([15, 57.15 + 8, 29.4])
-//    rotate([0, 90, 180])
-//        color("green")
-//            import("35_hdd_rail_hard_drive.stl");
-//translate([-7, 57.15 -.8, 6.75])
-//    rotate([-90, 0, 90])
-//        color("blue")
-//            import("FujitsuHdRail.stl");
+if (PART == "rail") {
+	rail();
+}
