@@ -41,6 +41,9 @@ OPENSCAD=openscad
 OPENSCAD_OPTIONS=-DVERBOSE=false
 IMAGE_OPTIONS=--imgsize=1024,768 --colorscheme=Solarized
 
+SLICER=prusaslicer
+SLICER_OPTIONS=--printer-technology FFF --center 100,100 -g --loglevel 0 --load slicer.ini
+
 # ----- Everything after this should not need modification --------------------
 
 check_defined = $(strip $(foreach 1,$1, $(call __check_defined,$1,$(strip $(value 2)))))
@@ -56,26 +59,30 @@ SOURCES=$(shell $(DEPEND) $(PREFIX).scad)
 
 STL=stl
 IMAGE=png
+GCODE=gcode
 
 MODELS=$(patsubst %,$(STL)/$(PREFIX)-%.$(STL),$(PARTS))
 IMAGES=$(patsubst %,$(IMAGE)/$(PREFIX)-%.$(IMAGE),$(PARTS))
+GCODES=$(patsubst %,$(GCODE)/$(PREFIX)-%.$(GCODE),$(PARTS))
 ALLIN1=$(PREFIX)-all.scad
 
 
-all:	models images $(ALLIN1)
+all:	models images gcodes $(ALLIN1)
 
 directories:
-	mkdir -p $(STL) $(IMAGE)
+	mkdir -p $(STL) $(IMAGE) $(GCODE)
 
 models: directories $(MODELS)
 
 images: directories $(IMAGES)
 
+gcodes: directories $(GCODES)
+
 clean:
-	rm -f $(STL)/$(PREFIX)-* $(IMAGE)/$(PREFIX)-* $(ALLIN1)
+	rm -f $(STL)/$(PREFIX)-* $(IMAGE)/$(PREFIX)-* $(GCODE)/$(PREFIX)-* $(ALLIN1)
 
 cleanall:
-	rm -rf $(STL) $(IMAGE) $(ALLIN1)
+	rm -rf $(STL) $(IMAGE) $(GCODE) $(ALLIN1)
 
 # Dependencies for models
 
@@ -86,6 +93,11 @@ $(MODELS) : $(STL)/$(PREFIX)-%.$(STL) : $(SOURCES)
 
 $(IMAGES) : $(IMAGE)/$(PREFIX)-%.$(IMAGE) : $(SOURCES)
 	$(OPENSCAD) $(OPENSCAD_OPTIONS) -o $@ -DPART=\"$(subst $(PREFIX)-,,$(subst .$(IMAGE),,$(@F)))\" $(IMAGE_OPTIONS) $<
+
+# Dependencies for gcodes
+
+$(GCODES) : $(GCODE)/$(PREFIX)-%.$(GCODE) : $(STL)/$(PREFIX)-%.$(STL) slicer.ini
+	$(SLICER) $(SLICER_OPTIONS) -o $@ $<
 
 # Dependencies for all-in-1
 $(ALLIN1) : $(SOURCES)
