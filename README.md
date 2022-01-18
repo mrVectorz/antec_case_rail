@@ -11,7 +11,7 @@ In my case, this meant increasing the value from 2 to 3 to get a solid pin.
 
 - Code: [Github Repository](https://github.com/AnthonyZ71/antec_case_rail)
 - STLs:
-  - [Prusa Printers](https://www.prusaprinters.org/print/112341)
+  - [Prusa Printers](https://www.prusaprinters.org/prints/112341-antec-three-hundred-two-302-35-hdd-rail)
 
 # References 
 
