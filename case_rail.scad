@@ -20,8 +20,8 @@ module pin(pin_diameter, pin_length) {
 module pins(length = 5) {
     // Diameter of #6 32 screw is .1380"
     pin_diameter = .1380 * 25.4 - tolerance;
-    // Distance between front and back screw holes is 4 inches;
-    pin_spacing = 4 * 25.4;
+    // Distance between front and back hole is 60mm
+    pin_spacing = 60;
 
     translate([length - tolerance, pin_spacing/2, 0]) {
         pin(pin_diameter, length);

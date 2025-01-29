@@ -1,3 +1,8 @@
+# Fork Modifications
+Alteration to make this case rail work for my SSD carriers.
+- Pins are 60mm apart instead of 4". 
+- Added the `rounded_cube` module used.
+
 # Antec Case Rail
 
 Replacement rails for an Antec case.
